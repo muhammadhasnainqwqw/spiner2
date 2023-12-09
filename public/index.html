@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Article Spinner</title>
+</head>
+<body>
+    <h1>Article Spinner</h1>
+    <form id="spinnerForm">
+        <textarea id="originalText" name="text" rows="10" cols="50"></textarea><br>
+        <input type="submit" value="Spin Article">
+    </form>
+    <div id="spunText"></div>
+
+    <script>
+        document.getElementById('spinnerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const originalText = document.getElementById('originalText').value;
+            fetch('/spin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: originalText })
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('spunText').innerText = data;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
